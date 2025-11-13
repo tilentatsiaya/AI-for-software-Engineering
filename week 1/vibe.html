@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini E-Learning Platform</title>
+    <style>
+        /* CSS STYLES */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+            margin: 0;
+            font-size: 2em;
+        }
+
+        /* --- Home Page (Course List) Styles --- */
+        #course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-card h3 {
+            margin-top: 0;
+            color: #28a745;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #007bff;
+            transition: width 0.4s ease;
+        }
+        
+        .status-text {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .completed-course {
+            border-left: 5px solid #28a745; /* Green marker for completed */
+            opacity: 0.8;
+        }
+
+        /* --- Course Detail Page Styles --- */
+        #course-detail {
+            display: none; /* Initially hidden */
+        }
+
+        .back-button {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        #detail-title {
+            color: #007bff;
+        }
+
+        .lesson-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .lesson-item {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .lesson-item.completed-lesson {
+            border-left: 3px solid #28a745; /* Green */
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .completion-button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .completion-button:hover {
+            background-color: #218838;
+            transform: scale(1.01);
+        }
+        
+        .completion-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mini E-Learning Dashboard 📚</h1>
+        </header>
+
+        <section id="home-page">
+            <h2>My Courses</h2>
+            <div id="course-list">
+                </div>
+        </section>
+
+        <section id="course-detail">
+            <button class="back-button" onclick="showHomePage()">← Back to Courses</button>
+            <h2 id="detail-title"></h2>
+            <div id="detail-progress">
+                </div>
+            <h3>Lessons</h3>
+            <ul class="lesson-list" id="lesson-list">
+                </ul>
+            <button id="mark-complete-btn" class="completion-button" onclick="markCourseCompleted()"></button>
+        </section>
+
+    </div>
+
+    <script>
+        // JAVASCRIPT LOGIC
+
+        // 1. Course Data Structure
+        let courses = [
+            {
+                id: 1,
+                title: "Introduction to HTML & CSS",
+                description: "Build your first web pages.",
+                lessons: [
+                    { title: "HTML Basics", completed: false },
+                    { title: "CSS Selectors", completed: true },
+                    { title: "Flexbox Layout", completed: false }
+                ],
+                isCompleted: false
+            },
+            {
+                id: 2,
+                title: "JavaScript Fundamentals",
+                description: "Learn variables, functions, and arrays.",
+                lessons: [
+                    { title: "Variables and Data Types", completed: true },
+                    { title: "Control Flow (If/Else)", completed: true },
+                    { title: "Working with Arrays", completed: true }
+                ],
+                isCompleted: false
+            },
+            {
+                id: 3,
+                title: "Advanced React Hooks",
+                description: "Master useState, useEffect, and custom hooks.",
+                lessons: [
+                    { title: "useState and functional components", completed: false },
+                    { title: "The useEffect Hook", completed: false },
+                ],
+                isCompleted: false
+            }
+        ];
+
+        // 2. DOM Elements
+        const courseListEl = document.getElementById('course-list');
+        const homePageEl = document.getElementById('home-page');
+        const courseDetailEl = document.getElementById('course-detail');
+        const detailTitleEl = document.getElementById('detail-title');
+        const detailProgressEl = document.getElementById('detail-progress');
+        const lessonListEl = document.getElementById('lesson-list');
+        const markCompleteBtn = document.getElementById('mark-complete-btn');
+
+        let currentCourseId = null;
+
+        /**
+         * Calculates the completion percentage for a given course.
+         * @param {Object} course - The course object.
+         * @returns {number} The completion percentage (0-100).
+         */
+        function calculateProgress(course) {
+            const totalLessons = course.lessons.length;
+            if (totalLessons === 0) return 0;
+
+            const completedLessons = course.lessons.filter(lesson => lesson.completed).length;
+            return Math.round((completedLessons / totalLessons) * 100);
+        }
+
+        /**
+         * Renders the list of courses on the Home Page.
+         */
+        function renderCourseList() {
+            courseListEl.innerHTML = ''; // Clear existing list
+
+            courses.forEach(course => {
+                const progress = calculateProgress(course);
+                const isAllLessonsComplete = progress === 100;
+                
+                // Update course status if all lessons are complete
+                if (isAllLessonsComplete && !course.isCompleted) {
+                    course.isCompleted = true;
+                }
+
+                const card = document.createElement('div');
+                card.classList.add('course-card');
+                if (course.isCompleted) {
+                    card.classList.add('completed-course');
+                }
+                card.onclick = () => showCourseDetail(course.id);
+
+                card.innerHTML = `
+                    <h3>${course.title}</h3>
+                    <p>${course.description}</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%;"></div>
+                    </div>
+                    <p class="status-text">
+                        Progress: ${progress}% 
+                        ${course.isCompleted ? '✅ **Completed**' : ''}
+                    </p>
+                `;
+                courseListEl.appendChild(card);
+            });
+        }
+
+        /**
+         * Switches the view to the Home Page.
+         */
+        function showHomePage() {
+            currentCourseId = null;
+            renderCourseList(); // Re-render to update progress/completion status
+            homePageEl.style.display = 'block';
+            courseDetailEl.style.display = 'none';
+        }
+
+        /**
+         * Switches the view to the Course Detail Page.
+         * @param {number} courseId - The ID of the course to display.
+         */
+        function showCourseDetail(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+
+            currentCourseId = courseId;
+            const progress = calculateProgress(course);
+            const isAllLessonsComplete = progress === 100;
+
+            // 1. Update Detail Title
+            detailTitleEl.textContent = course.title;
+
+            // 2. Update Detail Progress
+            detailProgressEl.innerHTML = `
+                <p>Course Progress: <strong>${progress}%</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%;"></div>
+                </div>
+            `;
+
+            // 3. Update Lesson List
+            lessonListEl.innerHTML = '';
+            course.lessons.forEach(lesson => {
+                const lessonItem = document.createElement('li');
+                lessonItem.classList.add('lesson-item');
+                if (lesson.completed) {
+                    lessonItem.classList.add('completed-lesson');
+                }
+                lessonItem.textContent = `${lesson.title} ${lesson.completed ? ' (Done)' : ''}`;
+                lessonListEl.appendChild(lessonItem);
+            });
+
+            // 4. Update Completion Button
+            if (course.isCompleted) {
+                markCompleteBtn.textContent = '✅ Course Completed';
+                markCompleteBtn.disabled = true;
+            } else if (isAllLessonsComplete) {
+                 markCompleteBtn.textContent = 'Mark Course as Completed';
+                 markCompleteBtn.disabled = false;
+            } else {
+                markCompleteBtn.textContent = `Finish Remaining Lessons (${100 - progress}%)`;
+                markCompleteBtn.disabled = true;
+            }
+            
+
+            // 5. Switch View
+            homePageEl.style.display = 'none';
+            courseDetailEl.style.display = 'block';
+        }
+
+        /**
+         * Marks the current course as fully completed.
+         */
+        function markCourseCompleted() {
+            const course = courses.find(c => c.id === currentCourseId);
+            if (!course) return;
+
+            const progress = calculateProgress(course);
+            if (progress === 100 && !course.isCompleted) {
+                course.isCompleted = true;
+                alert(`Congratulations! You've completed the course: ${course.title}! 🎉`);
+                // Re-render the detail page to reflect the new status
+                showCourseDetail(currentCourseId); 
+            } else if (!course.isCompleted) {
+                 alert("You must complete all lessons before marking the course as completed.");
+            }
+        }
+
+        // Initial render when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // First, ensure all initial course data is consistent (e.g., if progress is 100% but not marked complete)
+            courses.forEach(course => {
+                const progress = calculateProgress(course);
+                if (progress === 100) {
+                    // This is a design choice: allow courses with 100% progress to be marked complete
+                    // but don't automatically set the `isCompleted` flag until the user clicks the button,
+                    // unless they've already been manually set in the initial data.
+                }
+            });
+
+            showHomePage();
+        });
+    </script>
+</body>
+</html>
+

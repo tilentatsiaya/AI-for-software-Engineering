@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini E-Learning Platform</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mini E-Learning Dashboard 📚</h1>
+        </header>
+
+        <section id="home-page">
+            <h2>My Courses</h2>
+            <div id="course-list"></div>
+        </section>
+
+        <section id="course-detail">
+            <button class="back-button" onclick="showHomePage()">← Back to Courses</button>
+            <h2 id="detail-title"></h2>
+            <div id="detail-progress"></div>
+            <h3>Lessons</h3>
+            <ul class="lesson-list" id="lesson-list"></ul>
+            <button id="mark-complete-btn" class="completion-button" onclick="markCourseCompleted()"></button>
+        </section>
+    </div>
+
+    <script src="js/courses.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
