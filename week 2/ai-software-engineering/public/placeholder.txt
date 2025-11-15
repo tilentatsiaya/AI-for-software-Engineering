@@ -1,0 +1,1 @@
+Add images in public/images/ (e.g., map.png, logo.svg) and reference them in Next with /images/xyz.png

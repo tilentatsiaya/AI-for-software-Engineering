@@ -1,0 +1,23 @@
+{
+  "name": "disease-outbreak-predictor",
+  "version": "1.0.0",
+  "description": "AI-powered disease outbreak prediction system for SDG 3",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "train-model": "python src/train_model.py"
+  },
+  "dependencies": {
+    "next": "14.0.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "tailwindcss": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  }
+}

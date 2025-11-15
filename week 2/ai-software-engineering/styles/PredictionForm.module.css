@@ -1,0 +1,96 @@
+/* container for the form */
+.container {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* responsive grid for inputs */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.field {}
+.label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.btn {
+  padding: 10px 14px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: #6b7280;
+  color: #fff;
+}
+
+/* result area */
+.resultCard {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px solid #e6eefc;
+}
+
+.smallMuted {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.progressWrap {
+  height: 10px;
+  width: 100%;
+  background: #e6e6e6;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progressFill {
+  height: 100%;
+  background: #10b981; /* default green */
+  transition: width 220ms ease;
+}
+
+/* color variants (apply conditionally) */
+.fillHigh { background: #dc2626; }   /* red */
+.fillMedium { background: #f59e0b; } /* amber */
+.fillLow { background: #10b981; }    /* green */
+
+.error {
+  margin-top: 12px;
+  color: #dc2626;
+}
